@@ -1,0 +1,17 @@
+name: Daily company notification
+on:
+  schedule:
+    - cron: "30 5 * * *"
+  workflow_dispatch:
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install yfinance pandas
+      - run: python daily_notify.py
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
